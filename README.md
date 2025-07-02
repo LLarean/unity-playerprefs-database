@@ -20,10 +20,10 @@ A lightweight, flexible save system for Unity that uses PlayerPrefs and JSON ser
 
 ```csharp
 // Save data
-GenericSaveManager.Save("player", new PlayerData(...));
+Database.Save("player", new PlayerData(...));
 
 // Load data
-PlayerData data = GenericSaveManager.Load<PlayerData>("player");
+PlayerData data = Database.Load<PlayerData>("player");
 ```
 
 ### Features:  
