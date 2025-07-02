@@ -44,11 +44,11 @@ There are 3 ways to install this plugin:
 - *(via Package Manager)* add the following line to *Packages/manifest.json*:
   - `"com.llarean.eventbus": "https://github.com/llarean/unity-playerprefs-database.git",`
 
-### HOW TO and EXAMPLE CODE
+### EXAMPLE CODE
 
 1. Creating Serializable Classes
 
-To save custom data in the database, create a [Serializable] class with your fields. Example:
+To save custom data in the database, create a `[Serializable]` class with your fields. Example:
 
 ```csharp
 [Serializable]
@@ -58,23 +58,6 @@ public class PlayerProfile
     public int Score;
 }
 ```
-
-Key Rules:
-- Add [Serializable]
-- Required for JSON conversion in Unity
-
-Supported Field Types:
-- Primitive types (int, string, bool)
-- Arrays/Lists (List<T>, T[])
-- Dictionaries (Dictionary<TKey, TValue>)
-- Other [Serializable] classes
-
-Avoid:
-- Unity-specific types (e.g., GameObject, Sprite)
-- Non-serializable fields (mark as [NonSerialized] if needed)
-
-*Why Serializable?  
-Unity’s JsonUtility (used internally) requires the [Serializable] attribute to convert objects to JSON.*
 
 2. Fill in the created classes
 
@@ -93,17 +76,8 @@ To persist your serializable class, pass it to the Database.Save() method with a
 ```csharp
 Database.Save("player_profile", profile);
 ```
-Key Points:
-- Unique Keys
-- Use descriptive keys (e.g., "player_profile", "inventory_state") to avoid collisions.
 
-When to Save
-Call Save() when:
-- Player exits the game (OnApplicationQuit())
-- Important values change (e.g., currency updates)
-- Manually triggered (e.g., save buttons)
-
-3. Loading Data from the Database
+4. Loading Data from the Database
 
 To retrieve saved data, call Database.Load<T>() with the same key used for saving.
 
@@ -117,22 +91,44 @@ if (loadedProfile != null)
 }
 ```
 
-Key Notes:
-- Always specify the type (<UserData>) when loading.
-- Check for null if the key might not exist.
+### Best Practices and Key Concepts
 
-**Best Practices**
+#### When to Save
+Call `Save()` when:
+- The player exits the game (`OnApplicationQuit()`)
+- Important values change (e.g., currency updates)
+- Manually triggered (e.g., save buttons)
 
-Key Management: Store keys in constants to avoid typos:
+#### Serializable Classes
+- Add `[Serializable]` to your classes
+- Required for JSON conversion in Unity
+
+*Why `[Serializable]`?*  
+Unity’s `JsonUtility` requires this attribute to serialize objects.
+
+#### Supported Field Types
+- Primitive types (`int`, `string`, `bool`)
+- Arrays/Lists (`List<T>`, `T[]`)
+- Dictionaries (`Dictionary<TKey, TValue>`)
+- Other `[Serializable]` classes
+
+*Avoid:*
+- Unity-specific types (e.g., `GameObject`, `Sprite`)
+- Non-serializable fields (`[NonSerialized]`)
+
+#### Loading Data
+- Always specify the type (`<PlayerProfile>`) when loading
+- Check for `null` if the key might not exist
+
+#### Key Management
+- Use unique and descriptive keys (e.g., `"player_profile"`)
+- Store keys as constants to avoid typos:
 
 ```csharp
-public static class SaveKeys 
+public static class SaveKeys
 {
     public const string Profile = "player_profile";
     public const string Settings = "game_settings";
 }
-```
-
-```csharp
 Database.Save(SaveKeys.Profile, profile);
 ```
