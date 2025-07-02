@@ -4,40 +4,135 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/llarean/unity-playerprefs-database/blob/master/LICENSE.md)
 ![stability-unstable](https://img.shields.io/badge/stability-unstable-red.svg)
 [![Releases](https://img.shields.io/github/v/release/llarean/unity-playerprefs-database)](https://github.com/llarean/unity-playerprefs-database/releases)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)  
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 
-A simple, modular save system for Unity using PlayerPrefs + JSON.  
-Save/load any serializable class with 2 lines of code. Supports collections (List/Dictionary) and error handling.  
-Made for small games!  
+**PlayerPrefs JSON Database** — лёгкая и модульная система сохранения для Unity на базе PlayerPrefs и JSON.  
+Сохраняйте и загружайте любые сериализуемые классы в 1-2 строки. Поддерживает коллекции (List/Dictionary) и обработку ошибок.  
+Идеально для небольших игр и прототипов!
 
 A lightweight, flexible save system for Unity that uses PlayerPrefs and JSON serialization to store game data. Perfect for small to medium projects, it supports:
 - Any serializable C# class (e.g., player stats, inventory, settings).
 - Easy save/load with just one line of code.
-- Runtime and Editor compatibility.  
+- Runtime and Editor compatibility.
+- **Tested on Unity 2020+**
 
-
-### Example:
-
-```csharp
-// Save data
-Database.Save("player", new PlayerData(...));
-
-// Load data
-PlayerData data = Database.Load<PlayerData>("player");
-```
-
-### Features:  
-- No external dependencies  
-- Handles lists, dictionaries, and custom classes  
-- Minimal setup required  
+### Features:
+- No external dependencies
+- Handles lists, dictionaries, and custom classes
+- Minimal setup required
 
 ### Limitations:
 
-- Not for large datasets  
-- Data is not encrypted  
+- Not for large datasets
+- Data is not encrypted
+- Unity’s JsonUtility does **not** support nested collections (например, `List<List<T>>` или `Dictionary<string, List<T>>`) и некоторые типы (например, `GameObject`, `Sprite`).
 
 ### Ideal for:
 
 - Prototypes
 - Mobile games
 - Player preferences and progress
+
+### INSTALLATION
+
+There are 3 ways to install this plugin:
+
+- import [PlayerPrefsDatabase.unitypackage](https://github.com/llarean/unity-playerprefs-database/releases) via *Assets-Import Package*
+- clone/[download](https://github.com/llarean/unity-playerprefs-database/archive/master.zip) this repository and move the *Plugins* folder to your Unity project's *Assets* folder
+- *(via Package Manager)* Select Add package from git URL from the add menu. A text box and an Add button appear. Enter a valid Git URL in the text box:
+  - `"https://github.com/llarean/unity-playerprefs-database.git"`
+- *(via Package Manager)* add the following line to *Packages/manifest.json*:
+  - `"com.llarean.eventbus": "https://github.com/llarean/unity-playerprefs-database.git",`
+
+### HOW TO and EXAMPLE CODE
+
+1. Creating Serializable Classes
+
+To save custom data in the database, create a [Serializable] class with your fields. Example:
+
+```csharp
+[Serializable]
+public class PlayerProfile
+{
+    public string Username;
+    public int Score;
+}
+```
+
+Key Rules:
+- Add [Serializable]
+- Required for JSON conversion in Unity
+
+Supported Field Types:
+- Primitive types (int, string, bool)
+- Arrays/Lists (List<T>, T[])
+- Dictionaries (Dictionary<TKey, TValue>)
+- Other [Serializable] classes
+
+Avoid:
+- Unity-specific types (e.g., GameObject, Sprite)
+- Non-serializable fields (mark as [NonSerialized] if needed)
+
+*Why Serializable?  
+Unity’s JsonUtility (used internally) requires the [Serializable] attribute to convert objects to JSON.*
+
+2. Fill in the created classes
+
+```csharp
+PlayerProfile player = new PlayerProfile()
+{
+    Username = "Player1",
+    Score = 100,
+};
+```
+
+3. Saving Data to the Database
+
+To persist your serializable class, pass it to the Database.Save() method with a unique key:
+
+```csharp
+Database.Save("player_profile", profile);
+```
+Key Points:
+- Unique Keys
+- Use descriptive keys (e.g., "player_profile", "inventory_state") to avoid collisions.
+
+When to Save
+Call Save() when:
+- Player exits the game (OnApplicationQuit())
+- Important values change (e.g., currency updates)
+- Manually triggered (e.g., save buttons)
+
+3. Loading Data from the Database
+
+To retrieve saved data, call Database.Load<T>() with the same key used for saving.
+
+```csharp
+PlayerProfile loadedProfile = Database.Load<PlayerProfile>("player_profile");  
+
+if (loadedProfile != null)  
+{
+    _inputField.text = loadedProfile.Message;  
+    Debug.Log($"Loaded message: {loadedProfile.Message}");  
+}
+```
+
+Key Notes:
+- Always specify the type (<UserData>) when loading.
+- Check for null if the key might not exist.
+
+**Best Practices**
+
+Key Management: Store keys in constants to avoid typos:
+
+```csharp
+public static class SaveKeys 
+{
+    public const string Profile = "player_profile";
+    public const string Settings = "game_settings";
+}
+```
+
+```csharp
+Database.Save(SaveKeys.Profile, profile);
+```
