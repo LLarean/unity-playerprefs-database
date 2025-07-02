@@ -1,0 +1,19 @@
+{
+  "name": "com.llarean.unity-playerprefs-database",
+  "displayName": "PlayerPrefsDatabase",
+  "version": "0.0.1",
+  "documentationUrl": "https://github.com/LLarean/unity-playerprefs-database",
+  "changelogUrl": "https://github.com/llarean/unity-playerprefs-database/releases",
+  "licensesUrl": "https://github.com/llarean/unity-playerprefs-database/blob/master/LICENSE.md",
+  "description": "A simple, modular save system for Unity using PlayerPrefs + JSON",
+  "keywords": [
+    "playerprefs",
+    "database",
+    "unity"
+  ],
+  "author": {
+    "name": "LLarean",
+    "email": "llarean@yandex.ru",
+    "url": "https://github.com/LLarean"
+  }
+}
