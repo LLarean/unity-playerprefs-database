@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace LLarean.PlayerPrefsDatabase.Runtime
 {
-    public class Database
+    public abstract class Database
     { 
         public static void Save<T>(string key, T data)
         {
@@ -18,12 +18,10 @@ namespace LLarean.PlayerPrefsDatabase.Runtime
 
         public static T Load<T>(string key) where T : new()
         {
-            if (PlayerPrefs.HasKey(key))
-            {
-                string json = PlayerPrefs.GetString(key);
-                return JsonDataSerializer.Deserialize<T>(json);
-            }
-            return new T();
+            if (!PlayerPrefs.HasKey(key)) return new T();
+            
+            string json = PlayerPrefs.GetString(key);
+            return JsonDataSerializer.Deserialize<T>(json);
         }
 
         public static void Delete(string key)
