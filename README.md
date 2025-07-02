@@ -6,9 +6,9 @@
 [![Releases](https://img.shields.io/github/v/release/llarean/unity-playerprefs-database)](https://github.com/llarean/unity-playerprefs-database/releases)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 
-**PlayerPrefs JSON Database** — лёгкая и модульная система сохранения для Unity на базе PlayerPrefs и JSON.  
-Сохраняйте и загружайте любые сериализуемые классы в 1-2 строки. Поддерживает коллекции (List/Dictionary) и обработку ошибок.  
-Идеально для небольших игр и прототипов!
+**PlayerPrefs JSON Database** is a lightweight and modular storage system for Unity based on PlayerPrefs and JSON.  
+Save and load any serializable classes in 1-2 lines. Supports collections (List/Dictionary) and error handling.  
+Perfect for small games and prototyping!
 
 A lightweight, flexible save system for Unity that uses PlayerPrefs and JSON serialization to store game data. Perfect for small to medium projects, it supports:
 - Any serializable C# class (e.g., player stats, inventory, settings).
