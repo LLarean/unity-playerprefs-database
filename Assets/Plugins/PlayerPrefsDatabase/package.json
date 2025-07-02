@@ -1,7 +1,7 @@
 {
   "name": "com.llarean.unity-playerprefs-database",
   "displayName": "PlayerPrefsDatabase",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "documentationUrl": "https://github.com/LLarean/unity-playerprefs-database",
   "changelogUrl": "https://github.com/llarean/unity-playerprefs-database/releases",
   "licensesUrl": "https://github.com/llarean/unity-playerprefs-database/blob/master/LICENSE.md",
